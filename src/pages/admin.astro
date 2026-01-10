@@ -1,0 +1,22 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import AdminDashboard from "../components/svelte/AdminDashboard.svelte";
+---
+
+<MainLayout title="Admin Panel - Caja Fuerte">
+    <!-- Background overlay for admin -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div
+            class="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[100px] rounded-full"
+        >
+        </div>
+        <div
+            class="fixed bottom-0 left-0 w-[500px] h-[500px] bg-secondary/20 blur-[100px] rounded-full"
+        >
+        </div>
+    </div>
+
+    <div class="relative z-10 pt-20">
+        <AdminDashboard client:load />
+    </div>
+</MainLayout>

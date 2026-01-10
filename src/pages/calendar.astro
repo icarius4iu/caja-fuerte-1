@@ -1,0 +1,57 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { CalendarWidget, type Promo } from "../components/react/CalendarWidget";
+
+// Mock Data passed from server (or database)
+const promos: Promo[] = [
+    {
+        id: "1",
+        title: "Reembolso con NBA",
+        category: "apuesta_gratis",
+        startDate: "2026-01-05",
+        endDate: "2026-01-07", // Past
+        benefit: "S/. 50",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC5mI3JmIYeu1a1aoCvcdqnhlJ7wuL1rmiFttacSRcvf9n0InQqX9CrliZ0YkhCbVgrbjOLaRPIvmU2-3MS18X9lSjvjmGWo2ZjNcq81M46ZwEl59eeQskqkJMvUlKbkXJwtk8GujxHOzGuQICsa5yipvFbNYk4CrCoVyr9ZtZMa8uUDz1KHSVC4kbcryhLTRFIAorHzNrrP0hEvtzJ7_uoZwIR4syOfgPN0fJvAXqbf3L8qYt0Iol3FicfQmDlaVotx-3fUW5_Ay8",
+    },
+    {
+        id: "2",
+        title: "Misiones de Futbol",
+        category: "giros_gratis",
+        startDate: "2026-01-08",
+        endDate: "2026-01-10", // Active
+        benefit: "20 Giros",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDo5XY-_yt6Sl0siHwHAxFEMLIW-nYsv_EjYM5pXYMZQxFOlktZcEao85h0O3UTp2Lmgcy-gt4RusvWuUImU9j-tNyBSio5_jwWAGow26Ql-4jfpYMh7MhchcLGvD7i5SOZn0Tj-PD4hVWUkzb1Eg2EGMQN19wIgUexU-ZNxONzQLW22T-ZO-WkpcxCj0NHu7w6-fDv-ZK6MM8PI5bySPWX3BUc_j5get82lGYa1G7M-ndtpPJ6y47uQQ7JBhUc3ZusPW7QNsHckB4",
+    },
+    {
+        id: "3",
+        title: "Supercuota Chelsea",
+        category: "supercuotas",
+        startDate: "2026-01-10",
+        endDate: "2026-01-11", // Upcoming
+        benefit: "x5.50",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZuQiifgKnxIX6-MK1jYrW41-94PmFPyUyQiyNaVEuoZdn93e-JSiycvDrwNkt6mwUsjJorNvNQPSf1s7jkIU7pUN4dz2vRNmha9_5gpMqBk60ZvvKuDFX9H9vdThZD6aCGeHcI0X7lCePTk4qRhewAg_LZdpsiE8ThIDfMbC-iIZXeOreJo9jftnGGl_e2F2UPc1ElCTzx_GkwwMv8DkgtjpYUbCWRgAAdAVKsQN_PkQax-0Ukzbt_2GC7usq48R40oZeTaS8n_c",
+    },
+    {
+        id: "4",
+        title: "Bono Bienvenida",
+        category: "apuesta_gratis",
+        startDate: "2026-01-08",
+        endDate: "2026-01-15", // Spanning next week
+        benefit: "S/. 100",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBoomTPQBrIv5ZWoRBF_uB5isk48Z9L135J83eIxCLzWYV8NjUWXALQ7KC8IkrBXWz6nWSqyh5wt1jODv69nRmhpFSd0j53DY0KpTmLKn_E4AUfxXd3l6vXDQowu8hr9MA2YUNO_Bj8QXBL_t1E1BfhbZ95YavYQX2L81OX5QUfh6uYv-4iKpMuXnKHIjpH9ieaXDIgfsb5mfIOZUzVmAPm72dItotc8srL_a4TfbAFu293VQBNoMvL7OgsvkuCQVA6SQMhrdrtW18",
+    },
+    {
+        id: "5",
+        title: "Torneo Slots",
+        category: "giros_gratis",
+        startDate: "2026-01-05",
+        endDate: "2026-01-11", // Full week
+        benefit: "S/. 5000",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC5mI3JmIYeu1a1aoCvcdqnhlJ7wuL1rmiFttacSRcvf9n0InQqX9CrliZ0YkhCbVgrbjOLaRPIvmU2-3MS18X9lSjvjmGWo2ZjNcq81M46ZwEl59eeQskqkJMvUlKbkXJwtk8GujxHOzGuQICsa5yipvFbNYk4CrCoVyr9ZtZMa8uUDz1KHSVC4kbcryhLTRFIAorHzNrrP0hEvtzJ7_uoZwIR4syOfgPN0fJvAXqbf3L8qYt0Iol3FicfQmDlaVotx-3fUW5_Ay8",
+    },
+];
+---
+
+<MainLayout title="Calendario de Promociones - Caja Fuerte">
+    <CalendarWidget client:load initialPromos={promos} />
+</MainLayout>

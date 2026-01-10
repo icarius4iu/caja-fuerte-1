@@ -1,0 +1,39 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import BonusDetail from "../../components/svelte/bonuses/BonusDetail.svelte";
+import { bonuses } from "../../data/bonuses";
+
+export async function getStaticPaths() {
+    return bonuses.map((bonus) => ({
+        params: { slug: bonus.slug },
+        props: { bonus },
+    }));
+}
+
+const { bonus } = Astro.props;
+---
+
+<MainLayout title={`${bonus.title} - Caja Fuerte`}>
+    <div
+        class="bg-background-light dark:bg-background-dark min-h-screen pb-20 pt-24 relative"
+    >
+        <!-- Background Decor -->
+        <div
+            class="absolute top-0 inset-x-0 h-[300px] bg-gradient-to-b from-secondary to-background-dark z-0"
+        >
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Breadcrumb -->
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-8">
+                <a href="/bonos" class="hover:text-white transition-colors"
+                    >Bonos</a
+                >
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span class="text-primary">{bonus.slug}</span>
+            </div>
+
+            <BonusDetail client:load bonus={bonus} />
+        </div>
+    </div>
+</MainLayout>
