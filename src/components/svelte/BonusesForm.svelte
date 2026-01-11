@@ -34,8 +34,12 @@
 </script>
 
 <div
-    class="bg-secondary/50 rounded-xl border border-white/5 p-6 backdrop-blur-sm"
+    class="bg-[#13151A]/60 backdrop-blur-xl border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden"
 >
+    <!-- Decoration -->
+    <div
+        class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none rounded-r-3xl"
+    ></div>
     <h2 class="text-2xl font-bold text-white font-display mb-6">
         Agregar Nuevo Bono
     </h2>
