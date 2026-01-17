@@ -1,39 +1,38 @@
+# Blueprint de Aplicación Web Astro
 
-# Astro Web App Blueprint
+## Resumen del Proyecto
 
-## Project Overview
+Este proyecto es una aplicación web multifuncional construida con Astro.js, diseñada para servir como página de aterrizaje (landing page), visualizador de línea de tiempo/cronograma, panel de administración, sección de cursos educativos y calculadora de rutas. La arquitectura aprovecha la "Arquitectura de Islas" de Astro para crear una experiencia de usuario modular y de alto rendimiento.
 
-This project is a multi-functional web application built with Astro.js, designed to serve as a landing page, a timeline/chronogram viewer, an admin panel, an educational courses section, and a route calculator. The architecture leverages Astro's "Islands Architecture" to create a modular and performant user experience.
+## Esquema del Proyecto
 
-## Project Outline
+### Características Implementadas:
 
-### Implemented Features:
+- **Enrutamiento Basado en Archivos:** La aplicación utiliza el enrutamiento de Astro para crear las siguientes páginas:
+  - `/` (Página de Aterrizaje)
+  - `/admin` (Panel de Administración)
+  - `/timeline` (Línea de Tiempo/Cronograma)
+  - `/courses` (Cursos Educativos)
+  - `/calculator` (Calculadora de Rutas)
+- **Panel de Administración:** Un panel de administración completamente funcional con una UI moderna, construido con componentes modulares.
+  - **Componentes:** `AdminHeader`, `AdminSidebar`, `AdminFooter`, `WelcomeBanner` e `InfoCard`.
+  - **Estilos:** Se utiliza Tailwind CSS para un enfoque de estilo responsivo y "utility-first".
 
-*   **File-based Routing:** The application uses Astro's file-based routing to create the following pages:
-    *   `/` (Landing Page)
-    *   `/admin` (Admin Panel)
-    *   `/timeline` (Timeline/Chronogram)
-    *   `/courses` (Educational Courses)
-    *   `/calculator` (Route Calculator)
-*   **Admin Panel:** A fully functional admin panel with a modern UI, built with modular components.
-    *   **Components:** `AdminHeader`, `AdminSidebar`, `AdminFooter`, `WelcomeBanner`, and `InfoCard`.
-    *   **Styling:** Tailwind CSS is used for a responsive and utility-first approach to styling.
+### Diseño y Estilo:
 
-### Design and Styling:
+- **Layout:** Se utiliza un diseño principal (`MainLayout.astro`) para proporcionar una estructura consistente a todas las páginas.
+- **Estilos:**
+  - Una hoja de estilo global (`global.css`) se usa para estilos básicos.
+  - Tailwind CSS está integrado para el panel de administración y estilos generales.
 
-*   **Layout:** A main layout (`MainLayout.astro`) is used to provide a consistent structure to all pages.
-*   **Styling:** 
-    *   A global stylesheet (`global.css`) is used for basic styling.
-    *   Tailwind CSS is integrated for the admin panel.
-
-## Current Task
+## Tarea Actual
 
 ### Plan:
 
-1.  **Create Admin Panel Page:** Create `src/pages/admin.astro`.
-2.  **Create Modular Components:** Create individual `.astro` files for each component of the admin panel (`AdminHeader`, `AdminSidebar`, `AdminFooter`, `WelcomeBanner`, `InfoCard`).
-3.  **Add Content to Components:** Populate the components with the necessary HTML and logic.
-4.  **Install and Configure Tailwind CSS:** Set up Tailwind CSS to style the admin panel.
-5.  **Integrate Components:** Import and use the created components within the `admin.astro` page.
-6.  **Add Bonuses Management:** Create `BonusesForm.svelte` and integrate it into `AdminDashboard.svelte` as a new tab.
-7.  **Update Blueprint:** Reflect the changes in the `blueprint.md` file.
+1.  **Crear Página del Panel de Administración:** Crear `src/pages/admin.astro`.
+2.  **Crear Componentes Modulares:** Crear archivos `.astro` individuales para cada componente del panel de administración (`AdminHeader`, `AdminSidebar`, `AdminFooter`, `WelcomeBanner`, `InfoCard`).
+3.  **Añadir Contenido a los Componentes:** Poblar los componentes con el HTML y la lógica necesarios.
+4.  **Instalar y Configurar Tailwind CSS:** Configurar Tailwind CSS para estilizar el panel de administración.
+5.  **Integrar Componentes:** Importar y usar los componentes creados dentro de la página `admin.astro`.
+6.  **Añadir Gestión de Bonificaciones:** Crear `BonusesForm.svelte` e integrarlo en `AdminDashboard.svelte` como una nueva pestaña.
+7.  **Actualizar Blueprint:** Reflejar los cambios en el archivo `blueprint.md`.
