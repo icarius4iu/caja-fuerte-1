@@ -1,55 +1,52 @@
 ---
+import AuthButton from "./AuthButton.svelte";
 ---
+
 <nav
-    class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-secondary/90 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300"
+  class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-secondary/90 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300"
 >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-            <div class="flex items-center space-x-3">
-                <div
-                    class="flex items-center justify-center w-10 h-10 bg-primary rounded-lg text-secondary"
-                >
-                    <i class="fas fa-dumbbell text-xl transform -rotate-12"></i>
-                </div>
-                <span
-                    class="font-display font-bold text-2xl tracking-tight text-secondary dark:text-white uppercase"
-                >
-                    Caja Fuerte
-                </span>
-            </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a
-                    class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
-                    href="#">Cursos</a
-                >
-                <a
-                    class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
-                    href="#">Herramientas</a
-                >
-                <a
-                    class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
-                    href="#">Comunidad</a
-                >
-                <a
-                    class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
-                    href="#">Sobre Nosotros</a
-                >
-            </div>
-            <div class="hidden md:flex">
-                <a
-                    class="bg-primary hover:bg-opacity-90 text-secondary font-display font-bold py-2.5 px-6 rounded-lg transition-all shadow-[0_0_15px_rgba(12,242,242,0.3)] hover:shadow-[0_0_25px_rgba(12,242,242,0.5)] transform hover:-translate-y-0.5"
-                    href="#"
-                >
-                    Empieza Gratis
-                </a>
-            </div>
-            <div class="md:hidden flex items-center">
-                <button
-                    class="text-secondary dark:text-white hover:text-primary focus:outline-none"
-                >
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <div class="flex items-center space-x-3">
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-primary rounded-lg text-secondary"
+        >
+          <i class="fas fa-dumbbell text-xl transform -rotate-12"></i>
         </div>
+        <span
+          class="font-display font-bold text-2xl tracking-tight text-secondary dark:text-white uppercase"
+        >
+          Caja Fuerte
+        </span>
+      </div>
+      <div class="hidden md:flex items-center space-x-8">
+        <a
+          class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
+          href="#">Cursos</a
+        >
+        <a
+          class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
+          href="#">Herramientas</a
+        >
+        <a
+          class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
+          href="#">Comunidad</a
+        >
+        <a
+          class="text-secondary dark:text-gray-300 hover:text-accent-orange dark:hover:text-primary font-medium transition-colors"
+          href="#">Sobre Nosotros</a
+        >
+      </div>
+      <div class="hidden md:flex">
+        <AuthButton client:load />
+      </div>
+      <div class="md:hidden flex items-center">
+        <button
+          class="text-secondary dark:text-white hover:text-primary focus:outline-none"
+        >
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
     </div>
+  </div>
 </nav>

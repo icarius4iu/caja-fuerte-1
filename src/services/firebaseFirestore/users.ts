@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import app from "../firebase";
 
 const db = getFirestore(app);
@@ -23,7 +23,26 @@ export async function getUserRole(uid: string): Promise<UserRole> {
       return null;
     }
   } catch (error) {
-    console.error("Error fetching user role:", error);
     return null;
+  }
+}
+
+/**
+ * Creates a user profile in Firestore.
+ * @param uid The user's UID.
+ * @param email The user's email.
+ * @param role The role to assign (default: 'user').
+ */
+export async function createUserProfile(uid: string, email: string, role: UserRole = 'user'): Promise<void> {
+  try {
+    const userDocRef = doc(db, "users", uid);
+    await setDoc(userDocRef, {
+      email,
+      role,
+      createdAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("Error creating user profile:", error);
+    throw error;
   }
 }

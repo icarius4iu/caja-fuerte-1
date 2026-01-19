@@ -1,6 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import Navbar from "../components/Navbar.astro";
+import Header from "../components/landing/Header.astro";
 import Footer from "../components/Footer.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 
@@ -14,16 +14,16 @@ import CTASection from "../components/landing/CTASection.astro";
 ---
 
 <MainLayout title="Caja Fuerte - Comunidad Educativa de Apuestas">
-	<ThemeToggle />
-	<Navbar />
-	<main>
-		<HeroSection />
-		<FeaturesSection />
-		<CoursesSection />
-		<CommunitySection />
-		<SimulatorSection />
-		<TestimonialsSection />
-		<CTASection />
-	</main>
-	<Footer />
+  <ThemeToggle />
+  <Header />
+  <main>
+    <HeroSection />
+    <FeaturesSection />
+    <CoursesSection />
+    <CommunitySection />
+    <SimulatorSection />
+    <TestimonialsSection />
+    <CTASection />
+  </main>
+  <Footer />
 </MainLayout>
