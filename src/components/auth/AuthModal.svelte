@@ -88,6 +88,8 @@
 
         dispatch("login", { user });
         close();
+        // Redirect to portal after successful login
+        window.location.href = '/portal';
       } else if (mode === "register") {
         if (password !== confirmPassword) {
           error = "Las contraseñas no coinciden";
@@ -113,6 +115,8 @@
 
         dispatch("login", { user });
         close();
+        // Redirect to portal after successful registration
+        window.location.href = '/portal';
       } else if (mode === "forgot") {
         await sendPasswordResetEmail(auth, email);
         successMessage = "Revisa tu correo para restablecer tu contraseña.";
