@@ -1,8 +1,22 @@
 <script lang="ts">
-    import type { Bonus } from "../../../data/bonuses";
+    import { onMount } from "svelte";
+    import { getBonuses, type Bonus } from "../../../services/firebaseFirestore/bonuses";
     import { fly } from "svelte/transition";
     import { flip } from "svelte/animate";
-    export let bonuses: Bonus[] = [];
+
+    // Internal state instead of props
+    let bonuses: Bonus[] = [];
+    let isLoading = true;
+
+    onMount(async () => {
+        try {
+            bonuses = await getBonuses(true); // Get active bonuses
+        } catch (error) {
+            console.error("Error loading bonuses:", error);
+        } finally {
+            isLoading = false;
+        }
+    });
 
     // State
     let selectedType = "all";
@@ -245,9 +259,20 @@
     </div>
 
     <!-- Grid -->
+    {#if isLoading}
+        <div class="flex justify-center py-20">
+            <i class="fas fa-circle-notch fa-spin text-4xl text-primary"></i>
+        </div>
+    {:else}
     <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-0"
     >
+    
+    {#if bonuses.length === 0}
+         <div class="col-span-full text-center py-10 text-gray-500">
+            No hay bonos disponibles en este momento.
+         </div>
+    {/if}
         {#each filteredBonuses as bonus, i (bonus.slug)}
             <div
                 animate:flip={{ duration: 400 }}
@@ -378,6 +403,7 @@
             </div>
         {/each}
     </div>
+    {/if}
 </div>
 
 <style>

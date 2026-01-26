@@ -1,35 +1,79 @@
 <script lang="ts">
+    import { createBonus, type Bonus } from "../../services/firebaseFirestore/bonuses";
+
     let title = "";
-    let type = "welcome";
-    let amount = "";
+    let type: Bonus['type'] = "welcome";
+    // Mapped fields
+    let investment = "S/. 0";
+    let profit = "S/. 0";
+    let investmentAmount = 0;
+    let profitAmount = 0;
+    
     let code = "";
     let expiryDate = "";
     let description = "";
+    
+    // New Fields
+    let country: 'PE' | 'Global' = 'PE';
+    let videoUrl = "";
+    let slug = ""; // Handle auto-generation or manual
+
+    let isLoading = false;
+    let message = "";
+    let messageType: "success" | "error" = "success";
 
     const BONUS_TYPES = [
         { id: "welcome", label: "Bono de Bienvenida" },
-        { id: "reload", label: "Bono de Recarga" },
-        { id: "cashback", label: "Cashback" },
-        { id: "vip", label: "Bono VIP" },
-        { id: "referral", label: "Referidos" },
+        { id: "free_bet", label: "Apuesta Gratuita" }, // Updated ID to match data
+        { id: "cashback", label: "Reembolso" }, // Updated label mapping
+        { id: "rollover", label: "Rollover" },
+        { id: "combined", label: "Combinada" },
     ];
 
-    function handleSubmit() {
-        console.log("Nuevo Bono:", {
-            title,
-            type,
-            amount,
-            code,
-            expiryDate,
-            description,
-        });
-        alert("Bono guardado correctamente (Simulación)");
-        // Reset form
-        title = "";
-        amount = "";
-        code = "";
-        expiryDate = "";
-        description = "";
+    async function handleSubmit() {
+        isLoading = true;
+        message = "";
+
+        // Auto-generate slug from title if empty
+        const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+        try {
+            await createBonus({
+                slug: finalSlug,
+                title,
+                type,
+                investment,
+                profit,
+                investmentAmount: Number(investmentAmount),
+                profitAmount: Number(profitAmount),
+                country,
+                logo: "", // Placeholder or add input
+                bgColor: "bg-gray-600", // Default or add picker
+                verification: "DNI", // Default
+                paymentMethods: "Variado", // Default
+                videoUrl,
+                code,
+                expiryDate,
+                description,
+                isActive: true
+            });
+
+            message = "Bono creado exitosamente.";
+            messageType = "success";
+
+            // Reset form
+            title = "";
+
+            code = "";
+            expiryDate = "";
+            description = "";
+        } catch (e: any) {
+            console.error(e);
+            message = "Error al crear el bono: " + e.message;
+            messageType = "error";
+        } finally {
+            isLoading = false;
+        }
     }
 </script>
 
@@ -48,6 +92,11 @@
         on:submit|preventDefault={handleSubmit}
         class="space-y-6 max-w-2xl mx-auto"
     >
+        {#if message}
+            <div class={`p-4 rounded-lg mb-4 ${messageType === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 'bg-red-500/20 text-red-400 border border-red-500/20'}`}>
+                {message}
+            </div>
+        {/if}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="col-span-1 md:col-span-2">
                 <label
@@ -82,22 +131,49 @@
                 </select>
             </div>
 
+
+
+            <!-- New Fields -->
             <div>
-                <label
-                    for="bonus-amount"
-                    class="block text-gray-300 text-sm font-bold mb-2"
-                    >Monto / Porcentaje</label
-                >
-                <input
-                    id="bonus-amount"
-                    type="text"
-                    bind:value={amount}
-                    required
-                    class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
-                    placeholder="Ej: S/. 100 o 100%"
-                />
+                <label class="block text-gray-300 text-sm font-bold mb-2">Inversión (Texto)</label>
+                <input type="text" bind:value={investment} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" placeholder="Ej: S/. 200" />
+            </div>
+            
+            <div>
+                <label class="block text-gray-300 text-sm font-bold mb-2">Ganancia (Texto)</label>
+                <input type="text" bind:value={profit} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" placeholder="Ej: S/. 20" />
             </div>
 
+            <div>
+                 <label class="block text-gray-300 text-sm font-bold mb-2">Inversión (Numérico)</label>
+                 <input type="number" bind:value={investmentAmount} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" />
+            </div>
+
+            <div>
+                 <label class="block text-gray-300 text-sm font-bold mb-2">Ganancia (Numérico)</label>
+                 <input type="number" bind:value={profitAmount} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" />
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm font-bold mb-2">País</label>
+                <select bind:value={country} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none">
+                    <option value="PE">PerúOnly</option>
+                    <option value="Global">Global</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm font-bold mb-2">Video URL</label>
+                <input type="url" bind:value={videoUrl} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" placeholder="https://youtube.com/..." />
+            </div>
+            
+             <!-- Slug Override -->
+            <div>
+                <label class="block text-gray-300 text-sm font-bold mb-2">Slug (Opcional)</label>
+                <input type="text" bind:value={slug} class="w-full bg-surface-dark text-white border border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none" placeholder="Auto-generado si está vacío" />
+            </div>
+
+            <!-- Legacy Fields -->
             <div>
                 <label
                     for="bonus-code"
@@ -147,9 +223,14 @@
         <div class="pt-4 flex justify-end">
             <button
                 type="submit"
-                class="bg-primary hover:bg-opacity-90 text-secondary font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(12,242,242,0.3)] transition-all transform hover:-translate-y-1"
+                disabled={isLoading}
+                class="bg-primary hover:bg-opacity-90 text-secondary font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(12,242,242,0.3)] transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                Guardar Bono
+                {#if isLoading}
+                    <span class="inline-block animate-spin mr-2">⟳</span> Guardando...
+                {:else}
+                    Guardar Bono
+                {/if}
             </button>
         </div>
     </form>

@@ -1,10 +1,16 @@
 <script lang="ts">
+  import { createCalendarEvent, type CalendarEvent } from "../../services/firebaseFirestore/calendar";
+
   let title = "";
-  let category = "apuesta_gratis";
+  let category: CalendarEvent['category'] = "apuesta_gratis";
   let startDate = "";
   let endDate = "";
   let benefit = "";
   let imageUrl = "";
+
+  let isLoading = false;
+  let message = "";
+  let messageType: "success" | "error" = "success";
 
   const CATEGORIES = [
     { id: "apuesta_gratis", label: "Apuesta Gratis" },
@@ -12,22 +18,36 @@
     { id: "supercuotas", label: "Supercuotas" },
   ];
 
-  function handleSubmit() {
-    console.log("Nueva Promoción:", {
-      title,
-      category,
-      startDate,
-      endDate,
-      benefit,
-      imageUrl,
-    });
-    alert("Promoción guardada correctamente (Simulación)");
-    // Reset form
-    title = "";
-    startDate = "";
-    endDate = "";
-    benefit = "";
-    imageUrl = "";
+  async function handleSubmit() {
+    isLoading = true;
+    message = "";
+
+    try {
+        await createCalendarEvent({
+            title,
+            category,
+            startDate,
+            endDate,
+            benefit,
+            imageUrl
+        });
+
+        message = "Promoción guardada exitosamente.";
+        messageType = "success";
+        
+        // Reset form
+        title = "";
+        startDate = "";
+        endDate = "";
+        benefit = "";
+        imageUrl = "";
+    } catch (e: any) {
+        console.error(e);
+        message = "Error al guardar la promoción: " + e.message;
+        messageType = "error";
+    } finally {
+        isLoading = false;
+    }
   }
 </script>
 
@@ -46,6 +66,11 @@
     on:submit|preventDefault={handleSubmit}
     class="space-y-6 max-w-2xl mx-auto"
   >
+    {#if message}
+        <div class={`p-4 rounded-lg mb-4 ${messageType === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 'bg-red-500/20 text-red-400 border border-red-500/20'}`}>
+            {message}
+        </div>
+    {/if}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="col-span-1 md:col-span-2">
         <label class="block text-gray-300 text-sm font-bold mb-2"
@@ -127,9 +152,14 @@
     <div class="pt-4 flex justify-end">
       <button
         type="submit"
-        class="bg-primary hover:bg-opacity-90 text-secondary font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(12,242,242,0.3)] transition-all transform hover:-translate-y-1"
+        disabled={isLoading}
+        class="bg-primary hover:bg-opacity-90 text-secondary font-bold py-3 px-8 rounded-xl shadow-[0_0_15px_rgba(12,242,242,0.3)] transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Publicar Promoción
+        {#if isLoading}
+            <span class="inline-block animate-spin mr-2">⟳</span> Guardando...
+        {:else}
+            Publicar Promoción
+        {/if}
       </button>
     </div>
   </form>

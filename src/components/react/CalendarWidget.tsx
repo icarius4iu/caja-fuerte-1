@@ -1,17 +1,10 @@
 import React, { useState, useMemo } from 'react';
+import { getCalendarEvents, type CalendarEvent } from '../../services/firebaseFirestore/calendar';
 
-export interface Promo {
-    id: string;
-    title: string;
-    category: 'apuesta_gratis' | 'giros_gratis' | 'supercuotas';
-    startDate: string; // ISO date YYYY-MM-DD
-    endDate: string;
-    benefit: string;
-    image?: string;
-}
+export interface Promo extends CalendarEvent { }
 
 interface CalendarWidgetProps {
-    initialPromos: Promo[];
+    initialPromos?: Promo[];
 }
 
 const CATEGORIES = {
@@ -20,11 +13,38 @@ const CATEGORIES = {
     supercuotas: { label: 'Supercuotas', icon: 'fas fa-chart-line', color: 'accent-orange' },
 };
 
-export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos }) => {
+export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos = [] }) => {
     // State
-    const [currentDate, setCurrentDate] = useState(new Date('2026-01-05T00:00:00')); // Default to mock start date
+    const [events, setEvents] = useState<Promo[]>(initialPromos);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentDate, setCurrentDate] = useState(new Date()); // Default to today
     const [viewMode, setViewMode] = useState<'week' | 'day'>('week');
     const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+    React.useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const fetchedEvents = await getCalendarEvents();
+                // Map Firestore model to Widget model if needed (currently they match closely)
+                // The widget expects 'image' but service has 'imageUrl'. Let's handle that mapping if needed, 
+                // but for now I'll cast it since I can fix the interface or the map.
+                // Actually, the widget uses `event.image`, let's check line 272.
+                // The interface `Promo` had `image?: string`. The service `CalendarEvent` has `imageUrl?: string`.
+                // I should map it.
+                const mappedEvents = fetchedEvents.map(e => ({
+                    ...e,
+                    image: e.imageUrl || '',
+                }));
+                setEvents(mappedEvents);
+            } catch (error) {
+                console.error("Failed to load calendar events", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchEvents();
+    }, []);
 
     // Helper Functions
     const getDaysToShow = () => {
@@ -57,8 +77,8 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos })
     const processedEvents = useMemo(() => {
         // 1. Filter
         let filtered = activeFilter
-            ? initialPromos.filter(p => p.category === activeFilter)
-            : initialPromos;
+            ? events.filter((p: Promo) => p.category === activeFilter)
+            : events;
 
         // 2. Map to display range
         const viewStart = daysToShow[0];
@@ -67,11 +87,11 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos })
         const viewEndStr = viewEnd.toISOString().split('T')[0];
 
         // Filter out events strictly outside the view
-        filtered = filtered.filter(p => p.endDate >= viewStartStr && p.startDate <= viewEndStr);
+        filtered = filtered.filter((p: Promo) => p.endDate >= viewStartStr && p.startDate <= viewEndStr);
 
         // 3. Calculate Layout
         // We need to determine grid columns (1-based)
-        const eventsWithLayout = filtered.map(p => {
+        const eventsWithLayout = filtered.map((p: Promo) => {
             const startDiff = (new Date(p.startDate).getTime() - viewStart.getTime()) / (1000 * 60 * 60 * 24);
             const duration = (new Date(p.endDate).getTime() - new Date(p.startDate).getTime()) / (1000 * 60 * 60 * 24) + 1;
 
@@ -96,7 +116,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos })
         const rows: boolean[][] = []; // rows[rowIndex][dayIndex (0-6)] = occupied
 
         // Sort by colStart, then colSpan (longest first) for better packing
-        eventsWithLayout.sort((a, b) => {
+        eventsWithLayout.sort((a: any, b: any) => {
             if (a.colStart !== b.colStart) return a.colStart - b.colStart;
             return b.colSpan - a.colSpan;
         });
@@ -215,8 +235,10 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos })
                     {/* Headers Grid */}
                     <div className={`grid ${viewMode === 'week' ? 'grid-cols-7' : 'grid-cols-1'} border-b border-white/5`}>
                         {daysToShow.map((date, i) => {
-                            // Mock today
-                            const isToday = date.toISOString().startsWith('2026-01-10');
+                            // Mock today check relative to real date
+                            const todayStr = new Date().toISOString().split('T')[0];
+                            const dateStr = date.toISOString().split('T')[0];
+                            const isToday = dateStr === todayStr;
                             return (
                                 <div key={i} className={`p-4 text-center border-r border-white/5 last:border-r-0 ${isToday ? 'bg-primary/10' : 'bg-surface-dark'}`}>
                                     <p className={`text-sm font-medium uppercase mb-1 ${isToday ? 'text-primary' : 'text-gray-400'}`}>
@@ -247,8 +269,9 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ initialPromos })
                             gap: '4px'
                         }}>
                             {/* We manually place items based on calculated rows */}
-                            {processedEvents.events.map((event) => {
-                                const isExpired = event.endDate < '2026-01-10'; // Mock date
+                            {processedEvents.events.map((event: any) => {
+                                const todayStr = new Date().toISOString().split('T')[0];
+                                const isExpired = event.endDate < todayStr;
                                 const categoryStyle = CATEGORIES[event.category as keyof typeof CATEGORIES];
 
                                 return (
