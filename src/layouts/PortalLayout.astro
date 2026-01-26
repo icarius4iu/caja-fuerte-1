@@ -1,5 +1,6 @@
 ---
 import PortalNav from '../components/astro/PortalNav.astro';
+import LoadingSpinner from '../components/astro/LoadingSpinner.astro';
 ---
 <!DOCTYPE html>
 <html class="scroll-smooth dark" lang="es">
@@ -17,8 +18,8 @@ import PortalNav from '../components/astro/PortalNav.astro';
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         rel="stylesheet"
     />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <script>
+    <script is:inline src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script is:inline>
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -68,9 +69,11 @@ import PortalNav from '../components/astro/PortalNav.astro';
     </style>
 </head>
 <body class="bg-background-dark text-text-main-dark font-body antialiased">
+    <LoadingSpinner message="Cargando portal..." />
     <PortalNav />
     <main class="min-h-screen">
         <slot />
     </main>
 </body>
 </html>
+

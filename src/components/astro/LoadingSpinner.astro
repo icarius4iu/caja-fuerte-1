@@ -1,0 +1,65 @@
+---
+// LoadingSpinner.astro - Full page loading overlay
+interface Props {
+    message?: string;
+}
+
+const { message = "Cargando..." } = Astro.props;
+---
+
+<div id="loading-overlay" class="fixed inset-0 bg-background-dark/95 backdrop-blur-sm z-[9999] flex items-center justify-center transition-opacity duration-300">
+    <div class="text-center">
+        <!-- Animated Spinner -->
+        <div class="relative w-20 h-20 mx-auto mb-6">
+            <!-- Outer ring -->
+            <div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+            <!-- Spinning arc -->
+            <div class="absolute inset-0 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+            <!-- Inner glow -->
+            <div class="absolute inset-3 bg-primary/10 rounded-full animate-pulse"></div>
+            <!-- Center icon -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-vault text-primary text-xl"></i>
+            </div>
+        </div>
+        
+        <!-- Message -->
+        <p class="text-white font-display font-bold text-lg mb-2">{message}</p>
+        <div class="flex items-center justify-center gap-1">
+            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Hide loading overlay when page is fully loaded
+    function hideLoading() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    // Hide on DOMContentLoaded or after timeout
+    if (document.readyState === 'complete') {
+        hideLoading();
+    } else {
+        window.addEventListener('load', hideLoading);
+        // Fallback timeout in case load event doesn't fire
+        setTimeout(hideLoading, 5000);
+    }
+</script>
+
+<style>
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+</style>
