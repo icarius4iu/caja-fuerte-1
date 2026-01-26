@@ -1,0 +1,75 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+---
+
+<PortalLayout>
+    <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-br from-secondary to-surface-darker rounded-3xl p-8 md:p-12 mb-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-3xl"></div>
+            <div class="relative z-10">
+                <h1 class="font-display font-bold text-3xl md:text-4xl text-white mb-3">
+                    ¡Bienvenido al Portal! 👋
+                </h1>
+                <p class="text-gray-300 text-lg max-w-2xl">
+                    Accede a todos los bonos y promociones exclusivas. Mantente al día con el calendario de eventos.
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Access Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Bonos Card -->
+            <a href="/portal/bonos" class="group bg-surface-dark border border-white/5 rounded-2xl p-6 hover:border-primary/30 hover:bg-surface-dark/80 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <i class="fas fa-gift text-primary text-2xl"></i>
+                </div>
+                <h3 class="font-display font-bold text-xl text-white mb-2">Bonos Disponibles</h3>
+                <p class="text-gray-400 text-sm mb-4">Explora los mejores bonos de bienvenida, recargas y promociones especiales.</p>
+                <span class="text-primary font-medium text-sm group-hover:underline">
+                    Ver bonos <i class="fas fa-arrow-right ml-1"></i>
+                </span>
+            </a>
+
+            <!-- Calendar Card -->
+            <a href="/portal/calendar" class="group bg-surface-dark border border-white/5 rounded-2xl p-6 hover:border-accent-orange/30 hover:bg-surface-dark/80 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-accent-orange/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent-orange/20 transition-colors">
+                    <i class="fas fa-calendar-alt text-accent-orange text-2xl"></i>
+                </div>
+                <h3 class="font-display font-bold text-xl text-white mb-2">Calendario de Promociones</h3>
+                <p class="text-gray-400 text-sm mb-4">Visualiza las promociones activas y próximas en el calendario semanal.</p>
+                <span class="text-accent-orange font-medium text-sm group-hover:underline">
+                    Ver calendario <i class="fas fa-arrow-right ml-1"></i>
+                </span>
+            </a>
+
+            <!-- Coming Soon Card -->
+            <div class="bg-surface-dark/50 border border-white/5 rounded-2xl p-6 opacity-60">
+                <div class="w-14 h-14 bg-gray-700/30 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-tools text-gray-500 text-2xl"></i>
+                </div>
+                <h3 class="font-display font-bold text-xl text-gray-400 mb-2">Herramientas</h3>
+                <p class="text-gray-500 text-sm mb-4">Calculadoras, simuladores y más herramientas útiles.</p>
+                <span class="text-gray-500 font-medium text-sm">
+                    Próximamente
+                </span>
+            </div>
+        </div>
+
+        <!-- Recent Activity / Tips Section -->
+        <div class="mt-12">
+            <h2 class="font-display font-bold text-2xl text-white mb-6">Consejos Rápidos</h2>
+            <div class="bg-surface-dark border border-white/5 rounded-2xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-accent-yellow/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-lightbulb text-accent-yellow"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-1">Aprovecha los bonos de bienvenida</h4>
+                        <p class="text-gray-400 text-sm">Los bonos de bienvenida suelen ser los más generosos. Revisa las condiciones de rollover antes de reclamarlos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</PortalLayout>

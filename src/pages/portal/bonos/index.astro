@@ -1,0 +1,10 @@
+---
+import PortalLayout from '../../../layouts/PortalLayout.astro';
+import BonusList from '../../../components/svelte/bonuses/BonusList.svelte';
+---
+
+<PortalLayout>
+    <div class="pt-20">
+        <BonusList client:load />
+    </div>
+</PortalLayout>

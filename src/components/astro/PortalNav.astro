@@ -1,0 +1,114 @@
+---
+// PortalNav.astro - Navigation for authenticated users in /portal
+---
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface-darker/95 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <a href="/portal" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-vault text-primary text-lg"></i>
+                </div>
+                <span class="font-display font-bold text-xl text-white">Caja Fuerte</span>
+            </a>
+
+            <!-- Main Nav -->
+            <div class="hidden md:flex items-center gap-1">
+                <a href="/portal" class="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors font-medium">
+                    <i class="fas fa-home mr-2"></i>Dashboard
+                </a>
+                <a href="/portal/bonos" class="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors font-medium">
+                    <i class="fas fa-gift mr-2"></i>Bonos
+                </a>
+                <a href="/portal/calendar" class="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-colors font-medium">
+                    <i class="fas fa-calendar mr-2"></i>Calendario
+                </a>
+            </div>
+
+            <!-- User Menu -->
+            <div class="flex items-center gap-4">
+                <!-- Balance Badge -->
+                <div class="hidden sm:flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-xl font-bold">
+                    <i class="fas fa-wallet"></i>
+                    <span>S/.0</span>
+                </div>
+
+                <!-- User Dropdown -->
+                <div class="relative" id="user-menu-container">
+                    <button id="user-menu-btn" class="flex items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors">
+                        <div class="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                    </button>
+
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-surface-dark border border-white/10 rounded-xl shadow-xl overflow-hidden">
+                        <a href="/portal/cuenta" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                            <i class="fas fa-user-cog"></i>
+                            Mi Cuenta
+                        </a>
+                        <button id="logout-btn" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 transition-colors">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Salir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-white/5">
+                    <i class="fas fa-bars text-white"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-surface-dark border-t border-white/5">
+        <div class="px-4 py-4 space-y-2">
+            <a href="/portal" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white">
+                <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="/portal/bonos" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white">
+                <i class="fas fa-gift"></i>Bonos
+            </a>
+            <a href="/portal/calendar" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white">
+                <i class="fas fa-calendar"></i>Calendario
+            </a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // User dropdown toggle
+    const userBtn = document.getElementById('user-menu-btn');
+    const userDropdown = document.getElementById('user-dropdown');
+    
+    userBtn?.addEventListener('click', () => {
+        userDropdown?.classList.toggle('hidden');
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+        const container = document.getElementById('user-menu-container');
+        if (container && !container.contains(e.target as Node)) {
+            userDropdown?.classList.add('hidden');
+        }
+    });
+
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileBtn?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+    });
+
+    // Logout handler
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener('click', async () => {
+        const { signOut } = await import('firebase/auth');
+        const { auth } = await import('../../services/firebase');
+        await signOut(auth);
+        window.location.href = '/';
+    });
+</script>

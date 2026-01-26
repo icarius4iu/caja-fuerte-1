@@ -1,0 +1,10 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { CalendarWidget } from '../../components/react/CalendarWidget';
+---
+
+<PortalLayout>
+    <div class="pt-16">
+        <CalendarWidget client:load />
+    </div>
+</PortalLayout>
